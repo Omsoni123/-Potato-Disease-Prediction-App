@@ -102,15 +102,18 @@ MIT License
 
 ## 🏷️ Hashtags
 
-To improve GitHub and social media visibility:
-
 ```
 #AI #Chatbot #VoiceAssistant #Mumbai #SmartCity #RAG #Flask #Python #NLP
 #SpeechToText #TextToSpeech #LangChain #HuggingFace #MachineLearning
 #AIAssistant #CityHelpdesk #OpenSource #OmSoniProjects
 ```
+## Exanple 
 
-MIT License
+
+<img width="1879" height="469" alt="Screenshot 2025-11-06 203803" src="https://github.com/user-attachments/assets/fac7457e-abf2-4e8b-96cd-bb2b5560ba99" />
+<img width="1582" height="217" alt="Screenshot 2025-11-06 203921" src="https://github.com/user-attachments/assets/14b1fe24-42df-4376-8308-254e270a4e5e" />
+<img width="1903" height="390" alt="image" src="https://github.com/user-attachments/assets/26d00925-ef7c-4969-a749-aaab966dfbd4" />
+
 
 
 

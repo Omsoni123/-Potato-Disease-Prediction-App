@@ -1,119 +1,94 @@
-# 🏙️ Mumbai AI Helpdesk – Voice & Chatbot Assistant
 
-## 📑 Table of Contents
-
-* [Overview](#-overview)
-* [Real-World Impact](#-real-world-impact)
-* [Features](#-features)
-* [Tech Stack](#-tech-stack)
-* [Installation](#-installation)
-* [Usage](#-usage)
-* [How It Works](#-how-it-works)
-* [API Endpoints](#-api-endpoints)
-* [Future Improvements](#-future-improvements)
-* [Author](#-author)
-* [License](#-license)
-* [Hashtags](#-hashtags)
+# 🥔 Potato Disease Prediction App
 
 ## 🚀 Overview
 
-The **Mumbai AI Helpdesk** is an intelligent voice-enabled and chat-based system designed to provide real-time information about Mumbai. It helps citizens and tourists access transportation details, emergency services, tourism info, and general city guidance.
+An AI-powered web and API-based application designed to detect potato leaf diseases (Early Blight, Late Blight, Healthy). Built for farmers to enable early detection, reduce crop loss, and enhance agricultural productivity.
 
 ## 🌱 Real-World Impact
 
-This project helps citizens by:
+This project helps farmers by:
 
-* Providing instant voice-based answers.
-* Making city information more accessible.
-* Reducing dependency on manual helpdesks.
-* Improving awareness about public services.
-* Supporting tourists with accurate and fast information.
+* Detecting diseases at an early stage.
+* Reducing pesticide misuse through targeted treatment.
+* Improving yield and overall crop health.
+* Supporting data-driven agricultural decisions.
 
 ## 🌟 Features
 
-* 🎙️ **Voice Input Support** (Speech-to-Text)
-* 🔊 **Text-to-Speech Output**
-* 🤖 **AI-based conversational responses**
-* 📚 **RAG (Retrieval-Augmented Generation) for accurate city data**
-* ⚡ **Fast and lightweight**
-* 🌐 **Web Interface + API Support**
+* **FastAPI Backend:** TensorFlow CNN-based image classification.
+* **User-Friendly Interface:** Streamlit + HTML UI.
+* **REST API:** Efficient image preprocessing and prediction.
+* **Optimized Performance:** CORS handling, async processing, efficient model loading.
+* **Scalability:** Low latency real-time predictions.
 
 ## 🛠️ Tech Stack
 
-* **Frontend:** HTML, CSS, JavaScript
-* **Backend:** Python (Flask)
-* **AI/ML:** HuggingFace Transformers, LangChain, RAG pipeline
-* **Speech Processing:** SpeechRecognition, pyttsx3
-* **Vector DB:** FAISS
-* **Deployment:** Docker (optional), GitHub Pages / Render / AWS
+* **Frontend:** Streamlit, HTML, CSS
+* **Backend:** FastAPI, Python
+* **ML Model:** TensorFlow CNN
+* **Database:** SQLite / PostgreSQL (optional)
+* **Deployment:** Docker, Cloud (AWS/GCP)
 
 ## 📌 Installation
 
 ```bash
-# Clone repository
-git clone https://github.com/Omsoni123/Mumbai-AI-Helpdesk.git
-cd Mumbai-AI-Helpdesk
+# Clone the repository
+git clone https://github.com/Omsoni123/Potato-Disease-Prediction.git
+cd Potato-Disease-Prediction
 
 # Install dependencies
 pip install -r requirements.txt
 
-# Start Flask server
-python app.py
+# Run the FastAPI backend
+uvicorn app:app --host 0.0.0.0 --port 8000
+
+# Run the Streamlit frontend
+streamlit run app.py
 ```
 
 ## 🖼️ Usage
 
-1. Open the web app.
-2. Click "🎤 Start Recording" to speak.
-3. The AI listens, understands, and generates replies.
-4. Or simply use the chat input box.
+1. Upload a potato leaf image.
+2. Model predicts the disease.
+3. Result displayed instantly.
 
-## 📊 How It Works
+## 📊 Model Training
 
-* Uses **ASR** to convert speech → text.
-* The text query is processed by the **RAG model**.
-* Response is generated using **LLM + Vector Store**.
-* **TTS** speaks the response back to the user.
+* Dataset collection
+* Image preprocessing (resize, normalization, augmentation)
+* CNN training using TensorFlow
+* Hyperparameter tuning for improved accuracy
 
 ## 🔗 API Endpoints
 
-| Method | Endpoint  | Description                                        |
-| ------ | --------- | -------------------------------------------------- |
-| `POST` | `/ask`    | Send a question and receive an AI-generated answer |
-| `GET`  | `/health` | Check system health                                |
+| Method | Endpoint   | Description                               |
+| ------ | ---------- | ----------------------------------------- |
+| POST   | `/predict` | Upload image → returns disease prediction |
+| GET    | `/health`  | Health status of API                      |
+
+## 🔍 API Testing via Postman
+
+1. Open Postman → New **POST** request.
+2. URL: `http://127.0.0.1:8000/predict`
+3. Body → **form-data** → key: `file` (type: File)
+4. Upload an image.
+5. Click **Send** to get prediction.
+6. For health check: `GET http://127.0.0.1:8000/health`.
 
 ## 🚀 Future Improvements
 
-* Add multi-language support (Hindi, Marathi)
-* Deploy on cloud (AWS/GCP/Render)
-* Add mobile app UI
-* Add Mumbai map-based navigation system
+* Cloud deployment
+* Larger dataset for higher accuracy
+* Multi-language interface
 
 ## 👨‍💻 Author
 
 **Om Soni**
 📧 [om.soni2706@gmail.com](mailto:om.soni2706@gmail.com)
-🔗 GitHub: github.com/Omsoni123
-🔗 LinkedIn: linkedin.com/in/om-soni-8b0643231
+🔗 GitHub: [https://github.com/Omsoni123](https://github.com/Omsoni123)
+🔗 LinkedIn: [https://linkedin.com/in/om-soni-8b0643231](https://linkedin.com/in/om-soni-8b0643231)
 
 ## 📜 License
 
 MIT License
-
-## 🏷️ Hashtags
-
-```
-#AI #Chatbot #VoiceAssistant #Mumbai #SmartCity #RAG #Flask #Python #NLP
-#SpeechToText #TextToSpeech #LangChain #HuggingFace #MachineLearning
-#AIAssistant #CityHelpdesk #OpenSource #OmSoniProjects
-```
-## Exanple 
-
-
-<img width="1879" height="469" alt="Screenshot 2025-11-06 203803" src="https://github.com/user-attachments/assets/fac7457e-abf2-4e8b-96cd-bb2b5560ba99" />
-<img width="1582" height="217" alt="Screenshot 2025-11-06 203921" src="https://github.com/user-attachments/assets/14b1fe24-42df-4376-8308-254e270a4e5e" />
-<img width="1903" height="390" alt="image" src="https://github.com/user-attachments/assets/26d00925-ef7c-4969-a749-aaab966dfbd4" />
-
-
-
-

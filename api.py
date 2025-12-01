@@ -1,58 +1,81 @@
-# this api code ruuning the output we can see in postmen while running and sending the request from postmen
-
+# api/main.py
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import numpy as np
-from io import BytesIO     # use to read byte data
-from PIL import Image     # use to read the image
+from io import BytesIO
+from PIL import Image
 import tensorflow as tf
 from tensorflow.keras.models import load_model
-import os
-app = FastAPI()           # creating and calling the fast api  
+import os, traceback
 
-origins = [
-    "http://localhost",
-    "http://localhost:3000",
-]
+app = FastAPI()
 
+# ---- CORS: allow for testing; in production set to your Streamlit domain only ----
+# For local testing you can use ["*"], but restrict it when deployed.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],   # change to ['https://your-streamlit-app.streamlit.app'] in production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-model_dir = r"C:\Users\Om Soni\OneDrive\Desktop\potato diecese prediction\models"
-model_version = 1
-model = load_model(os.path.join(model_dir, f"model_v{model_version}.keras"))
-print("Model loaded successfully!")
-CLASS_NAME=['Potato___Early_blight', 'Potato___Late_blight', 'Potato___healthy']
 
-@app.get("/ping")              # to call my ping fucntion        (.get) is used for reading the file 
+# ---- Config from environment (portable) ----
+# Default values are for local dev. Change via env vars in production.
+MODEL_DIR = os.environ.get("MODEL_DIR", "models")   # relative folder in repo
+MODEL_VERSION = os.environ.get("MODEL_VERSION", "1")
+MODEL_FILENAME = f"model_v{MODEL_VERSION}.keras"    # change to .h5 if that's your file
+MODEL_PATH = os.path.join(MODEL_DIR, MODEL_FILENAME)
+
+# Diagnostics: ensure path exists and list files
+print("Using MODEL_PATH =", MODEL_PATH)
+if not os.path.exists(MODEL_PATH):
+    print("ERROR: Model file not found at:", MODEL_PATH)
+    try:
+        print("Files in model dir:", os.listdir(MODEL_DIR))
+    except Exception as e:
+        print("Could not list model dir:", e)
+    # If you prefer the process to continue (and fail on request) comment out the next line
+    raise FileNotFoundError(f"Model file missing at {MODEL_PATH}")
+
+# Try loading the model and show any errors
+try:
+    model = load_model(MODEL_PATH)
+    print("Model loaded successfully from:", MODEL_PATH)
+except Exception:
+    print("Failed to load model — full traceback below:")
+    traceback.print_exc()
+    raise
+
+CLASS_NAME = ['Potato___Early_blight', 'Potato___Late_blight', 'Potato___healthy']
+
+@app.get("/ping")
 async def ping():
-    return "Hello, I am alive"
+    return {"status": "alive"}
 
-def read_file_as_image(data) -> np.ndarray:                     # convert bytes to np.ndarray
-    image = np.array(Image.open(BytesIO(data)))                           # it will read the image in pil   and covert the iamge into np .array
+def read_file_as_image(data) -> np.ndarray:
+    image = np.array(Image.open(BytesIO(data)).convert("RGB"))
     return image
 
-@app.post("/predict")                              # is used for prediction purpose
-async def predict(                        #async is use to make sure multiple request are excuted perfectly
-    file: UploadFile = File(...)            # this function is used to upload a file 
-):
-    image = read_file_as_image(await file.read())         # await is used with async to handel multiple request
-    img_batch = np.expand_dims(image, 0)                   # it expand the dimanesion of array
-    
-    predictions = model.predict(img_batch)             # predicting the model 
+@app.post("/predict")
+async def predict(file: UploadFile = File(...)):
+    # read bytes and convert to numpy
+    image = read_file_as_image(await file.read())
+    img_batch = np.expand_dims(image, 0)
 
-    predicted_class = CLASS_NAME[np.argmax(predictions[0])]          # selecting the class na,e
-    confidence = np.max(predictions[0])                              # predicting the confience level
+    # prediction
+    predictions = model.predict(img_batch)
+    predicted_class = CLASS_NAME[int(np.argmax(predictions[0]))]
+    confidence = float(np.max(predictions[0]))
+
     return {
         'class': predicted_class,
-        'confidence': float(confidence)
+        'confidence': confidence
     }
 
+# Only run uvicorn when executed directly (not when imported by hosting platforms)
 if __name__ == "__main__":
+    uvicorn.run("api.main:app", host="0.0.0.0", port=8000, reload=True)
 
-    uvicorn.run(app, host='localhost', port=8000)          #making the function run    # to see this just click the link and at last (/ping)
+

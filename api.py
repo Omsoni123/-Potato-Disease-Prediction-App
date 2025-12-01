@@ -54,4 +54,5 @@ async def predict(                        #async is use to make sure multiple re
     }
 
 if __name__ == "__main__":
+
     uvicorn.run(app, host='localhost', port=8000)          #making the function run    # to see this just click the link and at last (/ping)
